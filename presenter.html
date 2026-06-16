@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>مسابقة حروف</title>
+    <meta name="theme-color" content="#003600">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="حروف">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://huroof-ca360-default-rtdb.firebaseio.com">
+    <link rel="stylesheet" href="styles.css?v=20260615-2">
+  </head>
+  <body>
+    <main class="app" aria-label="شاشة المقدم">
+      <section class="arena">
+        <header class="topbar">
+          <div class="brand">
+            <svg class="brand-mark presenter-logo" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"></path>
+            </svg>
+            <div>
+              <p class="eyebrow">مسابقة حروف</p>
+            </div>
+          </div>
+
+          <div class="match-state" aria-live="polite">
+            <span id="phase-label">اختيار حرف</span>
+            <strong id="turn-label">المقدم</strong>
+          </div>
+
+          <div class="room-action-group">
+            <form class="room-panel" id="room-code-form" aria-label="تغيير غرفة المسابقة">
+              <span>الغرفة</span>
+              <input id="room-code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="------" autocomplete="off" aria-label="رمز الغرفة">
+            </form>
+          </div>
+
+          <button class="display-link exit-button" id="exit-game" type="button" aria-label="الخروج من اللعبة" title="الخروج من اللعبة">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <path d="M16 17l5-5-5-5"></path>
+              <path d="M21 12H9"></path>
+            </svg>
+            خروج
+          </button>
+
+          <div class="display-link-group" hidden>
+            <div class="display-url" id="display-url" hidden aria-hidden="true"></div>
+          </div>
+        </header>
+
+        <section class="score-strip" aria-label="الفرق">
+          <article class="team-score red-team">
+            <label for="red-name">الفريق الأحمر</label>
+            <input id="red-name" value="الأحمر" maxlength="16">
+            <strong id="red-score">0</strong>
+          </article>
+
+          <article class="timer-box" aria-label="المؤقت">
+            <span id="timer-phase">السؤال</span>
+            <strong id="timer-display">00:30</strong>
+            <div class="timer-actions">
+              <button class="icon-button" id="timer-toggle" type="button" aria-label="تشغيل المؤقت" title="تشغيل / إيقاف">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </button>
+              <button class="icon-button" id="timer-reset" type="button" aria-label="إعادة المؤقت" title="إعادة المؤقت">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 11a8 8 0 1 0-2.4 5.7"></path>
+                  <path d="M20 4v7h-7"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="match-options" aria-label="إعدادات المباراة">
+              <span id="round-label">الجولة 1 من 3</span>
+              <div class="round-select" role="group" aria-label="عدد الجولات">
+                <button class="round-option is-active" type="button" data-rounds="3" aria-pressed="true">3</button>
+                <button class="round-option" type="button" data-rounds="5" aria-pressed="false">5</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="team-score green-team">
+            <label for="green-name">الفريق الأخضر</label>
+            <input id="green-name" value="الأخضر" maxlength="16">
+            <strong id="green-score">0</strong>
+          </article>
+        </section>
+
+        <section class="main-grid">
+          <section class="board-zone" aria-label="لوحة حروف">
+            <div class="board-frame">
+              <div class="letter-board" id="letter-board" role="grid" aria-label="لوحة الحروف"></div>
+            </div>
+            <div class="round-message" id="round-message" hidden aria-live="assertive">
+              <span>اكتمل الخط</span>
+              <strong id="round-winner-name">الفريق كسب الجولة</strong>
+              <button class="message-button" id="round-message-new" type="button">الجولة التالية</button>
+            </div>
+          </section>
+
+          <aside class="host-console" aria-label="تحكم مقدم المسابقة">
+            <section class="question-card">
+              <div class="question-head">
+                <div class="letter-badge" id="selected-letter">؟</div>
+                <div>
+                  <p class="eyebrow">المادة</p>
+                  <h2 id="subject-label">اختر حرفًا من اللوحة</h2>
+                </div>
+              </div>
+
+              <p class="question-text" id="question-text">تظهر صيغة السؤال بعد اختيار الحرف.</p>
+
+              <div class="answer-box" id="answer-box" hidden>
+                <span>الإجابة</span>
+                <strong id="answer-text"></strong>
+              </div>
+            </section>
+
+            <section class="buzz-panel" aria-label="الإجابة أولا">
+              <button class="buzz-button red-team" id="red-buzz" type="button" disabled>
+                <span>إجابة أولى</span>
+                <strong id="red-buzz-name">الأحمر</strong>
+              </button>
+              <button class="buzz-button green-team" id="green-buzz" type="button" disabled>
+                <span>إجابة أولى</span>
+                <strong id="green-buzz-name">الأخضر</strong>
+              </button>
+            </section>
+
+            <section class="host-actions" aria-label="قرارات المقدم">
+              <button class="command-button primary" id="correct-answer" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m20 6-11 11-5-5"></path>
+                </svg>
+                إجابة صحيحة
+              </button>
+              <button class="command-button" id="transfer-question" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M17 1l4 4-4 4"></path>
+                  <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                  <path d="M7 23l-4-4 4-4"></path>
+                  <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg>
+                تحويل السؤال
+              </button>
+              <button class="command-button" id="show-answer" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span id="show-answer-label">إظهار الإجابة</span>
+              </button>
+              <button class="command-button" id="new-question" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-3-6.7"></path>
+                  <path d="M21 3v6h-6"></path>
+                </svg>
+                سؤال جديد
+              </button>
+              <button class="command-button" id="same-letter" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v18"></path>
+                  <path d="m8 7 4-4 4 4"></path>
+                  <path d="m8 17 4 4 4-4"></path>
+                </svg>
+                نفس الحرف
+              </button>
+              <button class="command-button danger" id="new-round" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 6h18"></path>
+                  <path d="M8 6V4h8v2"></path>
+                  <path d="M19 6l-1 14H6L5 6"></path>
+                </svg>
+                الجولة التالية
+              </button>
+            </section>
+
+            <section class="winner-card" id="winner-card" hidden>
+              <span>الفائز</span>
+              <strong id="winner-name"></strong>
+            </section>
+          </aside>
+        </section>
+      </section>
+    </main>
+
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+    <script defer src="firebase-config.js?v=20260520-2"></script>
+    <script defer src="sync.js?v=20260520-2"></script>
+    <script defer src="pwa.js?v=20260614-1"></script>
+    <script defer src="script.js?v=20260615-2"></script>
+  </body>
+</html>

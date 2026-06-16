@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>مسابقة حروف</title>
+    <meta name="theme-color" content="#07130d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="حروف">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="preconnect" href="https://api.qrserver.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://huroof-ca360-default-rtdb.firebaseio.com">
+    <link rel="stylesheet" href="start.css?v=20260615-2">
+  </head>
+  <body>
+    <main class="start-app" aria-label="اختيار الشاشة">
+      <svg class="app-logo" viewBox="0 0 64 48" aria-hidden="true">
+        <path d="M32 2 2 17l30 15 30-15L32 2Z"></path>
+        <path d="M13 24v10l19 10 19-10V24l-19 10-19-10Z"></path>
+        <path d="M55 20v15"></path>
+      </svg>
+
+      <h1 class="app-title">مسابقة حروف</h1>
+
+      <div class="room-strip" aria-label="رمز الغرفة">
+        <span class="room-label">رمز الغرفة</span>
+        <strong id="room-code" class="room-code-val">------</strong>
+      </div>
+
+      <a class="choice-card presenter-card" id="presenter-link" href="presenter.html">
+        <span>المقدم</span>
+        <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4Z"></path>
+        </svg>
+      </a>
+
+      <div class="teams-row">
+        <a class="choice-card green-card" id="green-link" href="display.html?role=green">
+          <span>الفريق<br>الأخضر</span>
+          <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3Zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z"></path>
+          </svg>
+        </a>
+
+        <a class="choice-card red-card" id="red-link" href="display.html?role=red">
+          <span>الفريق الأحمر</span>
+          <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3Zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z"></path>
+          </svg>
+        </a>
+      </div>
+
+      <a class="choice-card public-card" id="public-link" href="display.html?role=display">
+        <span>الشاشة العامة</span>
+      </a>
+
+      <button class="choice-card qr-card-button" id="qr-btn" type="button">
+        <span>QR للانضمام</span>
+        <svg class="qr-mini-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 3h7v7H3V3Zm2 2v3h3V5H5Zm9-2h7v7h-7V3Zm2 2v3h3V5h-3ZM3 14h7v7H3v-7Zm2 2v3h3v-3H5Zm10-2h2v2h-2v-2Zm4 0h2v2h-2v-2Zm-4 4h2v3h-2v-3Zm3-2h3v5h-2v-3h-1v-2Zm-5 1h2v2h-2v-2Z"></path>
+        </svg>
+      </button>
+    </main>
+
+    <div class="qr-overlay" id="qr-overlay" hidden>
+      <div class="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qr-title">
+        <h2 id="qr-title">امسح للدخول على المسابقة</h2>
+        <div class="qr-frame">
+          <img id="qr-img" class="qr-img" width="220" height="220" alt="QR Code">
+        </div>
+        <p class="qr-room">رمز الغرفة: <strong id="qr-room-num"></strong></p>
+        <button class="qr-close" id="qr-close" type="button">إغلاق</button>
+      </div>
+    </div>
+
+    <script src="pwa.js?v=20260520-1"></script>
+    <script src="start.js?v=20260615-selection"></script>
+  </body>
+</html>

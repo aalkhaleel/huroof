@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تثبيت تطبيق حروف</title>
+    <meta name="theme-color" content="#003600">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="حروف">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="install.css?v=20260520-1">
+  </head>
+  <body>
+    <main class="install-page">
+      <section class="install-hero">
+        <img src="icons/icon-192.png" width="84" height="84" alt="">
+        <div>
+          <p>مسابقة حروف</p>
+          <h1>ثبّت التطبيق على جهازك</h1>
+        </div>
+      </section>
+
+      <button class="primary-install" type="button" data-install-app>تثبيت التطبيق</button>
+
+      <section class="install-grid" aria-label="طرق التثبيت">
+        <article>
+          <h2>Android</h2>
+          <p>افتح الرابط في Chrome، ثم اضغط تثبيت التطبيق أو Add to Home screen.</p>
+        </article>
+        <article>
+          <h2>iPhone / iPad</h2>
+          <p>افتح الرابط في Safari، اضغط زر المشاركة، ثم Add to Home Screen.</p>
+        </article>
+        <article>
+          <h2>Windows / Mac</h2>
+          <p>افتح الرابط في Chrome أو Edge، ثم اضغط أيقونة التثبيت بجانب شريط العنوان.</p>
+        </article>
+      </section>
+
+      <a class="back-link" href="/">الرجوع للتطبيق</a>
+      <p class="install-status" id="install-status" aria-live="polite"></p>
+    </main>
+
+    <script src="pwa.js?v=20260520-1"></script>
+  </body>
+</html>

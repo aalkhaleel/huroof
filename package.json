@@ -1,0 +1,9 @@
+{
+  "name": "huroof-game",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.cjs",
+    "check": "node --check firebase-config.js && node --check sync.js && node --check start.js && node --check script.js && node --check display.js && node --check pwa.js && node --check sw.js && node --check server.cjs && node --check api/state.js && node --check api/buzz.js && node --check api/network-info.js"
+  }
+}
