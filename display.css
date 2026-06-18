@@ -1173,6 +1173,41 @@ body {
   }
 }
 
+/* Extra tap comfort for contestant answer screens, especially on phones. */
+.contestant-red .display-question,
+.contestant-green .display-question {
+  padding-bottom: max(28px, calc(18px + env(safe-area-inset-bottom)));
+}
+
+.contestant-red .contestant-buzz,
+.contestant-green .contestant-buzz {
+  padding-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .contestant-red .display-question,
+  .contestant-green .display-question {
+    padding-bottom: max(34px, calc(22px + env(safe-area-inset-bottom)));
+  }
+
+  .contestant-red .contestant-buzz,
+  .contestant-green .contestant-buzz {
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .contestant-red .display-question,
+  .contestant-green .display-question {
+    padding-bottom: max(16px, calc(10px + env(safe-area-inset-bottom)));
+  }
+
+  .contestant-red .contestant-buzz,
+  .contestant-green .contestant-buzz {
+    padding-bottom: 2px;
+  }
+}
+
 /* Interlocking cellular board */
 
 .board-frame {
@@ -1436,4 +1471,3 @@ body {
     width: 118px;
   }
 }
-

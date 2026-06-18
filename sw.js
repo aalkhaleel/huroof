@@ -1,4 +1,4 @@
-const CACHE_NAME = "huroof-pwa-v20260615-9";
+const CACHE_NAME = "huroof-pwa-v20260616-1";
 
 const APP_SHELL = [
   "/",
@@ -8,7 +8,7 @@ const APP_SHELL = [
   "/display.html",
   "/start.css?v=20260615-2",
   "/styles.css?v=20260615-2",
-  "/display.css?v=20260615-6",
+  "/display.css?v=20260616-1",
   "/firebase-config.js?v=20260520-2",
   "/sync.js?v=20260520-2",
   "/start.js?v=20260615-selection",
