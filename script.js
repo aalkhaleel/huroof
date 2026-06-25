@@ -28468,7 +28468,25 @@ transferQuestion.addEventListener("click", transferToOtherTeam);
 showAnswer.addEventListener("click", toggleAnswer);
 newQuestion.addEventListener("click", chooseNewQuestion);
 sameLetter.addEventListener("click", resetSameLetter);
-newRound.addEventListener("click", nextRound);
+let newRoundConfirmTimer = null;
+
+function newRoundWithConfirm() {
+  if (newRound.classList.contains("pending-confirm")) {
+    clearTimeout(newRoundConfirmTimer);
+    newRound.classList.remove("pending-confirm");
+    nextRound();
+  } else {
+    newRound.classList.add("pending-confirm");
+    const originalText = newRound.lastChild.textContent;
+    newRound.lastChild.textContent = " تأكيد؟";
+    newRoundConfirmTimer = setTimeout(() => {
+      newRound.classList.remove("pending-confirm");
+      newRound.lastChild.textContent = originalText;
+    }, 3000);
+  }
+}
+
+newRound.addEventListener("click", newRoundWithConfirm);
 roundMessageNew.addEventListener("click", nextRound);
 timerToggle.addEventListener("click", toggleTimer);
 timerReset.addEventListener("click", resetTimer);
