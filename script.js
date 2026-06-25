@@ -27456,8 +27456,6 @@ const redBuzz = document.querySelector("#red-buzz");
 const greenBuzz = document.querySelector("#green-buzz");
 const correctAnswer = document.querySelector("#correct-answer");
 const transferQuestion = document.querySelector("#transfer-question");
-const showAnswer = document.querySelector("#show-answer");
-const showAnswerLabel = document.querySelector("#show-answer-label");
 const newQuestion = document.querySelector("#new-question");
 const sameLetter = document.querySelector("#same-letter");
 const undoCellBtn = document.querySelector("#undo-cell");
@@ -28066,15 +28064,6 @@ function resetBoardState() {
   renderBoard();
 }
 
-function toggleAnswer() {
-  if (!getSelectedCell()) {
-    return;
-  }
-
-  state.answerVisible = !state.answerVisible;
-  updateAll();
-}
-
 function toggleTimer() {
   if (state.timerId) {
     stopTimer();
@@ -28154,8 +28143,7 @@ function updateQuestion() {
   subjectLabel.textContent = cell ? formatQuestionSubject(cell) : "اختر حرفًا من اللوحة";
   questionText.textContent = cell ? cell.question : "تظهر صيغة السؤال بعد اختيار الحرف.";
   answerText.textContent = cell ? cell.answer : "";
-  answerBox.hidden = !cell || !state.answerVisible;
-  showAnswerLabel.textContent = state.answerVisible ? "إخفاء الإجابة" : "إظهار الإجابة";
+  answerBox.hidden = !cell;
 }
 
 function formatQuestionSubject(cell) {
@@ -28228,8 +28216,7 @@ function updateControls() {
   greenBuzz.disabled = !canBuzz;
   correctAnswer.disabled = !canJudge;
   transferQuestion.disabled = !canTransfer;
-  showAnswer.disabled = !hasOpenQuestion;
-  sameLetter.disabled = !hasOpenQuestion || getSelectedCell()?.owner;
+sameLetter.disabled = !hasOpenQuestion || getSelectedCell()?.owner;
   newQuestion.disabled = Boolean(state.winner || state.matchOver);
   timerToggle.disabled = Boolean(state.winner || state.matchOver);
   timerReset.disabled = Boolean(state.winner || state.matchOver);
@@ -28506,7 +28493,6 @@ redBuzz.addEventListener("click", () => buzz("red"));
 greenBuzz.addEventListener("click", () => buzz("green"));
 correctAnswer.addEventListener("click", markCorrect);
 transferQuestion.addEventListener("click", transferToOtherTeam);
-showAnswer.addEventListener("click", toggleAnswer);
 newQuestion.addEventListener("click", chooseNewQuestion);
 sameLetter.addEventListener("click", resetSameLetter);
 let newRoundConfirmTimer = null;
