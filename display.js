@@ -555,15 +555,32 @@ function updateBuzzControls(data) {
   const canRedBuzz = !contestantTeam || contestantTeam === "red";
   const canGreenBuzz = !contestantTeam || contestantTeam === "green";
 
-  displayRedBuzz.hidden = contestantTeam === "green";
-  displayGreenBuzz.hidden = contestantTeam === "red";
+  const isPublicDisplay = !contestantTeam;
+  const showingActive = isPublicDisplay && activePhase;
+
+  displayRedBuzz.hidden = showingActive ? data.currentTeam !== "red" : contestantTeam === "green";
+  displayGreenBuzz.hidden = showingActive ? data.currentTeam !== "green" : contestantTeam === "red";
+
   displayRedBuzz.disabled = !canRedBuzz || !canBuzz || waitingForRequest;
   displayGreenBuzz.disabled = !canGreenBuzz || !canBuzz || waitingForRequest;
   displayRedBuzz.classList.toggle("is-active", activePhase && data.currentTeam === "red");
   displayGreenBuzz.classList.toggle("is-active", activePhase && data.currentTeam === "green");
+  displayRedBuzz.classList.toggle("is-public-active", showingActive && data.currentTeam === "red");
+  displayGreenBuzz.classList.toggle("is-public-active", showingActive && data.currentTeam === "green");
   displayRedBuzzName.textContent = getTeamName(data.teams, "red");
   displayGreenBuzzName.textContent = getTeamName(data.teams, "green");
 
+  const redSpan = displayRedBuzz.querySelector("span");
+  const greenSpan = displayGreenBuzz.querySelector("span");
+  if (isPublicDisplay) {
+    if (redSpan) redSpan.textContent = showingActive && data.currentTeam === "red" ? "الإجابة عندك" : "طلب الإجابة";
+    if (greenSpan) greenSpan.textContent = showingActive && data.currentTeam === "green" ? "الإجابة عندك" : "طلب الإجابة";
+  }
+
+  const buzzButtonsGrid = displayRedBuzz.closest(".contestant-buzz-buttons");
+  if (buzzButtonsGrid) {
+    buzzButtonsGrid.classList.toggle("is-single", showingActive);
+  }
 }
 
 function requestBuzz(team) {

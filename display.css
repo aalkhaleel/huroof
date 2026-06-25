@@ -512,6 +512,10 @@ button {
   gap: 10px;
 }
 
+.contestant-buzz-buttons.is-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .contestant-red .contestant-buzz-buttons,
 .contestant-green .contestant-buzz-buttons {
   grid-template-columns: minmax(0, 1fr);
@@ -561,6 +565,19 @@ button {
   outline: 4px solid #f0d860;
   outline-offset: 3px;
   filter: brightness(1.12);
+}
+
+.contestant-buzz-button.is-public-active {
+  min-height: clamp(72px, 14vh, 116px);
+  outline-width: 5px;
+}
+
+.contestant-buzz-button.is-public-active span {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+}
+
+.contestant-buzz-button.is-public-active strong {
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
 }
 
 .contestant-buzz-button:not(:disabled):hover {
