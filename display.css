@@ -167,7 +167,8 @@ button {
   justify-items: center;
 }
 
-.display-room-form[hidden] {
+.display-room-form[hidden],
+.contestant-buzz-button[hidden] {
   display: none;
 }
 
