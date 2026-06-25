@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="preconnect" href="https://www.gstatic.com">
     <link rel="dns-prefetch" href="https://huroof-ca360-default-rtdb.firebaseio.com">
-    <link rel="stylesheet" href="styles.css?v=20260616-1">
+    <link rel="stylesheet" href="styles.css?v=20260616-2">
   </head>
   <body>
     <main class="app" aria-label="شاشة المقدم">
@@ -172,6 +172,13 @@
                 </svg>
                 نفس الحرف
               </button>
+              <button class="command-button" id="undo-cell" type="button" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 7v6h6"></path>
+                  <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                </svg>
+                تراجع
+              </button>
               <button class="command-button danger" id="new-round" type="button">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 6h18"></path>
@@ -196,6 +203,6 @@
     <script defer src="firebase-config.js?v=20260520-2"></script>
     <script defer src="sync.js?v=20260520-2"></script>
     <script defer src="pwa.js?v=20260614-1"></script>
-    <script defer src="script.js?v=20260616-1"></script>
+    <script defer src="script.js?v=20260616-2"></script>
   </body>
 </html>

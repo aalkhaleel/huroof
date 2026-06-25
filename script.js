@@ -27460,6 +27460,7 @@ const showAnswer = document.querySelector("#show-answer");
 const showAnswerLabel = document.querySelector("#show-answer-label");
 const newQuestion = document.querySelector("#new-question");
 const sameLetter = document.querySelector("#same-letter");
+const undoCellBtn = document.querySelector("#undo-cell");
 const newRound = document.querySelector("#new-round");
 const timerPhase = document.querySelector("#timer-phase");
 const timerDisplay = document.querySelector("#timer-display");
@@ -27852,7 +27853,17 @@ function renderBoard() {
 function selectLetter(index) {
   const cell = state.cells[index];
 
-  if (!cell || cell.owner || state.winner || state.matchOver) {
+  if (!cell || state.matchOver) {
+    return;
+  }
+
+  if (cell.owner) {
+    state.selectedIndex = index;
+    updateAll();
+    return;
+  }
+
+  if (state.winner) {
     return;
   }
 
@@ -27915,6 +27926,29 @@ function markCorrect() {
     finishRound(result.team, result.path);
   }
 
+  updateAll();
+}
+
+function undoCell() {
+  const cell = getSelectedCell();
+  if (!cell || !cell.owner || state.matchOver) return;
+
+  const prevOwner = cell.owner;
+  cell.owner = null;
+  state.teams[prevOwner].score -= 1;
+
+  if (state.winner === prevOwner) {
+    const stillWins = getRoundWinner();
+    if (!stillWins || stillWins.team !== prevOwner) {
+      state.roundWins[prevOwner] -= 1;
+      state.winner = null;
+      state.winningPath = [];
+    }
+  }
+
+  state.phase = "open";
+  state.currentTeam = null;
+  stopTimer();
   updateAll();
 }
 
@@ -28109,7 +28143,7 @@ function updateBoard() {
     button.classList.toggle("is-red", cell.owner === "red");
     button.classList.toggle("is-green", cell.owner === "green");
     button.classList.toggle("is-path", path.has(index));
-    button.disabled = Boolean(cell.owner || state.winner);
+    button.disabled = state.matchOver || (!cell.owner && Boolean(state.winner));
   });
 }
 
@@ -28202,6 +28236,13 @@ function updateControls() {
   roundOptions.forEach((button) => {
     button.disabled = state.currentRound !== 1 || Boolean(state.winner || state.matchOver || state.cells.some((cell) => cell.owner));
   });
+  const canUndo = Boolean(getSelectedCell()?.owner) && !state.matchOver;
+  if (!canUndo && undoCellBtn.classList.contains("pending-confirm")) {
+    clearTimeout(undoCellConfirmTimer);
+    undoCellBtn.classList.remove("pending-confirm");
+    undoCellBtn.lastChild.textContent = " تراجع";
+  }
+  undoCellBtn.disabled = !canUndo;
 }
 
 function updateTimer() {
@@ -28486,6 +28527,25 @@ function newRoundWithConfirm() {
   }
 }
 
+let undoCellConfirmTimer = null;
+
+function undoCellWithConfirm() {
+  if (undoCellBtn.classList.contains("pending-confirm")) {
+    clearTimeout(undoCellConfirmTimer);
+    undoCellBtn.classList.remove("pending-confirm");
+    undoCellBtn.lastChild.textContent = " تراجع";
+    undoCell();
+  } else {
+    undoCellBtn.classList.add("pending-confirm");
+    undoCellBtn.lastChild.textContent = " تأكيد؟";
+    undoCellConfirmTimer = setTimeout(() => {
+      undoCellBtn.classList.remove("pending-confirm");
+      undoCellBtn.lastChild.textContent = " تراجع";
+    }, 3000);
+  }
+}
+
+undoCellBtn.addEventListener("click", undoCellWithConfirm);
 newRound.addEventListener("click", newRoundWithConfirm);
 roundMessageNew.addEventListener("click", nextRound);
 timerToggle.addEventListener("click", toggleTimer);
