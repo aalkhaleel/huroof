@@ -27464,8 +27464,6 @@ const timerPhase = document.querySelector("#timer-phase");
 const timerDisplay = document.querySelector("#timer-display");
 const timerToggle = document.querySelector("#timer-toggle");
 const timerReset = document.querySelector("#timer-reset");
-const winnerCard = document.querySelector("#winner-card");
-const winnerName = document.querySelector("#winner-name");
 const roundMessage = document.querySelector("#round-message");
 const roundWinnerName = document.querySelector("#round-winner-name");
 const roundMessageNew = document.querySelector("#round-message-new");
@@ -28183,8 +28181,6 @@ function updateStatus() {
   if (hostFrameRedLeft) hostFrameRedLeft.textContent = state.teams.red.name;
   if (hostFrameRedRight) hostFrameRedRight.textContent = state.teams.red.name;
   roundLabel.textContent = `الجولة ${state.currentRound} من ${state.totalRounds}`;
-  winnerCard.hidden = !state.winner && !state.matchOver;
-  winnerName.textContent = state.matchOver ? getMatchWinnerLabel() : state.winner ? teamName(state.winner) : "";
   roundMessage.hidden = !state.winner && !state.matchOver;
   roundMessage.classList.toggle("is-red", state.winner === "red");
   roundMessage.classList.toggle("is-green", state.winner === "green");
