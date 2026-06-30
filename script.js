@@ -28208,8 +28208,11 @@ function updateControls() {
   const canJudge = (state.phase === "first" || state.phase === "second") && hasOpenQuestion && !state.timedOut;
   const canTransfer = state.phase === "first" && Boolean(state.currentTeam) && hasOpenQuestion;
 
+  const buzzActive = state.phase === "first" || state.phase === "second";
   redBuzz.disabled = !canBuzz;
   greenBuzz.disabled = !canBuzz;
+  redBuzz.classList.toggle("is-active", buzzActive && state.currentTeam === "red");
+  greenBuzz.classList.toggle("is-active", buzzActive && state.currentTeam === "green");
   correctAnswer.disabled = !canJudge;
   transferQuestion.disabled = !canTransfer;
 sameLetter.disabled = !hasOpenQuestion || getSelectedCell()?.owner;

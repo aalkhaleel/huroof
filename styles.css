@@ -738,6 +738,18 @@ h2 {
   background: #009c6d;
 }
 
+.buzz-button.is-active {
+  outline: 4px solid #f0d860;
+  outline-offset: 3px;
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+  box-shadow: inset 0 -5px 0 rgba(0,0,0,0.24), 0 6px 0 rgba(0,0,0,0.22);
+}
+
+.buzz-button.is-active span {
+  opacity: 1;
+}
+
 .command-button {
   min-width: 0;
   min-height: 46px;
