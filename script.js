@@ -28370,20 +28370,29 @@ function getStraightWinningPath(team) {
 
 function getNeighbors(index) {
   const cell = state.cells[index];
-  const candidates = [
-    [cell.row - 1, cell.col],
-    [cell.row + 1, cell.col],
-    [cell.row, cell.col - 1],
-    [cell.row, cell.col + 1],
-    [cell.row - 1, cell.col - 1],
-    [cell.row - 1, cell.col + 1],
-    [cell.row + 1, cell.col - 1],
-    [cell.row + 1, cell.col + 1],
-  ];
+  const { row, col } = cell;
+  // الأعمدة الفردية مُزاحة للأسفل، فالتجاور القطري يختلف حسب زوجية العمود
+  const candidates = col % 2 === 1
+    ? [
+        [row - 1, col],
+        [row + 1, col],
+        [row,     col - 1],
+        [row + 1, col - 1],
+        [row,     col + 1],
+        [row + 1, col + 1],
+      ]
+    : [
+        [row - 1, col],
+        [row + 1, col],
+        [row - 1, col - 1],
+        [row,     col - 1],
+        [row - 1, col + 1],
+        [row,     col + 1],
+      ];
 
   return candidates
-    .filter(([row, col]) => row >= 0 && row < ROWS && col >= 0 && col < COLS)
-    .map(([row, col]) => row * COLS + col);
+    .filter(([r, c]) => r >= 0 && r < ROWS && c >= 0 && c < COLS)
+    .map(([r, c]) => r * COLS + c);
 }
 
 function endWithoutWinner() {
